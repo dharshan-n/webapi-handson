@@ -1,0 +1,170 @@
+Task1:
+
+//Controller
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using WebAPIHON4.Models;
+
+namespace WebAPIHON4.Controllers
+{
+    public class CoursesController : ApiController
+    {
+        static List<Course> courses = new List<Course>()
+        {
+            new Course(){CourseId=1,CourseName="Android",Trainer="Shawn",Fees=12000,
+                         CourseDescription="Android is a mobile operating system development"},
+            new Course(){CourseId=2,CourseName="Asp.net",Trainer="Kevin",Fees=10000,
+                         CourseDescription="Asp.net is a open source web development framework"},
+            new Course(){CourseId=3,CourseName="JSP",Trainer="Debaratha",Fees=10000,
+                         CourseDescription="Java server pages is a technology used for web page creation" },
+            new Course(){CourseId=4,CourseName="Xamarin.forms",Trainer="Mark John",Fees=15000,
+                         CourseDescription="Xamarin forms are cross platform UI tools"}
+
+        };
+        
+        public HttpResponseMessage Get(string coursename)
+        {
+            Course result = new Course();
+            result = courses.Where(x => x.CourseName == coursename).FirstOrDefault();
+            if (result != null)
+                {
+                    return Request.CreateResponse<Course>(HttpStatusCode.OK,result);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Course Name not found");
+                }
+            
+        }
+        }
+        }
+        
+//model 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace WebAPIHON4.Models
+{
+    public class Course
+    {
+        public int CourseId { get; set; }
+        public string CourseName { get; set; }
+        public string Trainer { get; set; }
+        public int Fees { get; set; }
+        public string CourseDescription {get;set;}
+
+    }
+}
+
+
+
+
+
+Task 2:
+//controller:
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using WebAPIHON4.Models;
+namespace WebAPIHON4.Controllers
+{
+    public class BrandsController : ApiController
+    {
+
+        static List<Brand> brands = new List<Brand>() { 
+        new Brand(){BrandId="B001",Name="Haro"},
+        new Brand(){BrandId="B002",Name="Electra"},
+        new Brand(){BrandId="B003",Name="Heller"},
+        new Brand(){BrandId="B004",Name="Trek"},
+        };
+
+        [HttpPost]
+        public HttpResponseMessage Post([FromUri] Brand brand)
+        {
+            brands.Add(brand);
+          return Request.CreateResponse(HttpStatusCode.OK, brand);
+        }
+       }
+       }
+
+//Model:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace WebAPIHON4.Models
+{
+    public class Brand
+    {
+        public string BrandId { get; set; }
+        public string Name { get; set; }
+    }
+}
+
+
+
+
+Task 3:
+//Controller
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using WebAPIHON4.Models;
+
+namespace WebAPIHON4.Controllers
+{
+    public class CoursesController : ApiController
+    {
+        static List<Course> courses = new List<Course>()
+        {
+            new Course(){CourseId=1,CourseName="Android",Trainer="Shawn",Fees=12000,
+                         CourseDescription="Android is a mobile operating system development"},
+            new Course(){CourseId=2,CourseName="Asp.net",Trainer="Kevin",Fees=10000,
+                         CourseDescription="Asp.net is a open source web development framework"},
+            new Course(){CourseId=3,CourseName="JSP",Trainer="Debaratha",Fees=10000,
+                         CourseDescription="Java server pages is a technology used for web page creation" },
+            new Course(){CourseId=4,CourseName="Xamarin.forms",Trainer="Mark John",Fees=15000,
+                         CourseDescription="Xamarin forms are cross platform UI tools"}
+
+        };
+        [HttpPost]
+        public HttpResponseMessage Post([FromBody] Course course)
+        {
+            courses.Add(course);
+            return Request.CreateResponse(HttpStatusCode.OK, course);
+        }
+    }
+}
+
+//Model
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace WebAPIHON4.Models
+{
+    public class Course
+    {
+        public int CourseId { get; set; }
+        public string CourseName { get; set; }
+        public string Trainer { get; set; }
+        public int Fees { get; set; }
+        public string CourseDescription {get;set;}
+
+    }
+}

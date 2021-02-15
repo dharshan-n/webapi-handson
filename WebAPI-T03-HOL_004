@@ -1,0 +1,38 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+namespace StudentService.Controllers
+{
+    public class StudentsController : ApiController
+    {
+        //if return type is void then status will be 204 no content
+        //public void Post([FromBody] Student student)
+        //{
+        //    using(StudentDBEntities studentDBEntities=new StudentDBEntities())
+        //    {
+        //        studentDBEntities.Students.Add(student);
+        //        studentDBEntities.SaveChanges();
+        //    }
+        //}
+        public HttpResponseMessage Post([FromBody] Student student)
+        {
+            try
+            {
+                using(StudentDBEntities entities=new StudentDBEntities())
+                {
+                    entities.Students.Add(student);
+                    entities.SaveChanges();
+                    return Request.CreateResponse(HttpStatusCode.OK, student);
+                }
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+        }
+        }
+        }

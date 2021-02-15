@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+namespace StudentService.Controllers
+{
+    public class StudentsController : ApiController
+    {
+        //public IEnumerable<Student> Get()
+        //{
+        //    using(StudentDBEntities dBEntities=new StudentDBEntities())
+        //    {
+        //        return dBEntities.Students.ToList();
+        //    }
+        //}
+        //public Student Get(int id)
+        //{
+        //    using(StudentDBEntities dBEntities = new StudentDBEntities())
+        //    {
+        //        return dBEntities.Students.FirstOrDefault(x => x.ID==id);
+        //    }
+        //}
+
+        public HttpResponseMessage Get()
+        {
+            using (StudentDBEntities dBEntities = new StudentDBEntities())
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, dBEntities.Students.ToList());
+            }
+
+        }
+        public HttpResponseMessage Get(int id)
+        {
+            using (StudentDBEntities dBEntities = new StudentDBEntities())
+            {
+                var entity = dBEntities.Students.FirstOrDefault(x => x.ID == id);
+                if (entity != null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, entity);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, $"Student with Id {id} not found");
+                }
+            }
+        }
+}
+}

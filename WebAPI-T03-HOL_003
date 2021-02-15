@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+namespace StudentService.Controllers
+{
+    public class StudentsController : ApiController
+    {
+    //if return type is void then status will be 204 no content
+        //public HttpResponseMessage Put(int id,[FromBody]Student student)
+        //{
+        //    using(StudentDBEntities dBEntities=new StudentDBEntities())
+        //    {
+        //        var entity = dBEntities.Students.FirstOrDefault(x => x.ID == id);
+        //        entity.FirstName = student.FirstName;
+        //        entity.LastName = student.LastName;
+        //        entity.Gender = student.Gender;
+        //        entity.Address = student.Address;
+        //        dBEntities.SaveChanges();
+        //        return Request.CreateResponse(HttpStatusCode.OK, entity);
+        //    }
+        //}
+
+
+        public HttpResponseMessage Put(int id, [FromBody] Student student)
+        {
+            try
+            {
+                using (StudentDBEntities dBEntities = new StudentDBEntities())
+                {
+                    var entity = dBEntities.Students.FirstOrDefault(x => x.ID == id);
+                    if (entity == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound,$"Student with Id {id} not found to upadte");
+                    }
+                    else
+                    {
+                        entity.FirstName = student.FirstName;
+                        entity.LastName = student.LastName;
+                        entity.Gender = student.Gender;
+                        entity.Address = student.Address;
+                        dBEntities.SaveChanges();
+                        return Request.CreateResponse(HttpStatusCode.OK, entity);
+                    }
+                    
+                }
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+            
+        }
+        }
+        }

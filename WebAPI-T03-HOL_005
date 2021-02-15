@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+namespace StudentService.Controllers
+{
+    public class StudentsController : ApiController
+    {
+     //public void Delete(int id)
+        //{
+        //   using(StudentDBEntities dBEntities=new StudentDBEntities())
+        //    {
+        //        dBEntities.Students.Remove(dBEntities.Students.FirstOrDefault(x => x.ID == id));
+        //        dBEntities.SaveChanges();
+        //    }
+        //}
+        public HttpResponseMessage Delete(int id)
+        {
+            try
+            {
+                using (StudentDBEntities entities = new StudentDBEntities())
+                {
+                    var content = entities.Students.FirstOrDefault(x => x.ID == id);
+                    if (content == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, $"Student with ID {id} not found to delete");
+                    }
+                    else
+                    {
+                        entities.Students.Remove(content);
+                        entities.SaveChanges();
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+            }
+            
+        }
+    }
+}
